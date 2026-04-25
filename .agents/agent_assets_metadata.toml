@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "23TSy6LJp-m5OctiPCCJj"
+uri = "file://exports/project-sentinel-source.tar.gz"
+type = "unspecified"
+title = "Project Sentinel — Full Source Code"
