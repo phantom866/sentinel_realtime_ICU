@@ -1,0 +1,303 @@
+You are a senior backend engineer building a production-ready system for:
+
+"Project Sentinel – Decentralized ICU Monitoring System"
+
+Your task is to build a real-time backend system.
+
+⚙️ Tech Stack (MANDATORY):
+- Node.js + Express
+- MongoDB (Mongoose)
+- Socket.io (real-time communication)
+- JWT Authentication
+
+🎯 Core Features:
+1. Patient Management
+   - Add patient
+   - Get patient details
+   - Assign ward/bed
+
+2. Vitals Ingestion API
+   - Accept real-time vitals:
+     { patientId, heartRate, spo2, bp, temperature, timestamp }
+
+3. Real-Time Streaming
+   - Broadcast vitals using Socket.io
+   - Multiple clients should receive updates instantly
+
+4. Alert System
+   - If:
+     - heartRate < 50 or > 120
+     - spo2 < 92
+     - temperature > 39
+   → Trigger ALERT
+   → Emit alert event via WebSocket
+
+5. ICU Bed Tracking
+   - Track available ICU beds
+   - Allocate bed when patient becomes critical
+
+6. AI Integration (Mock)
+   - Create endpoint: /predict-risk
+   - Return dummy risk score (later replaced by ML model)
+
+🔐 Authentication:
+- Register/Login
+- JWT-based protection
+
+📦 Output Format (VERY IMPORTANT):
+1. Folder structure
+2. package.json
+3. Server setup (index.js)
+4. Models (Patient, Vitals, User, ICU)
+5. Routes (auth, patient, vitals)
+6. Controllers
+7. Socket.io setup
+8. Sample API requests (Postman format)
+
+🚨 Constraints:
+- Code must be clean and modular
+- Use MVC pattern
+- No placeholders like “implement later”
+- Everything should run locally
+
+Start generating the full backend code step by step.
+
+Generate this part isolated
+
+🎨 Frontend/UI Instruction Prompt
+
+Design a clean, modern, and professional user interface for Project Sentinel – Decentralized ICU Monitoring System.
+
+🧩 Design Requirements:
+Use a minimal, healthcare-grade aesthetic (inspired by hospital dashboards)
+Color palette:
+Primary: Deep blue / teal (trust & medical reliability)
+Secondary: Light gray / white backgrounds
+Alerts: Red (critical), Yellow (warning), Green (normal)
+Typography:
+Clean sans-serif (e.g., Inter, Roboto)
+Clear hierarchy for readability in critical environments
+📊 UI Components:
+Dashboard View
+Real-time patient vitals cards
+ICU bed availability panel
+Alert notifications section
+Patient Detail Page
+Live vitals graphs (heart rate, SpO2, temperature)
+Status indicators (Normal / Critical)
+Authentication Pages
+Simple, clean login/register forms
+✨ Animations & Interactions:
+Smooth card transitions and hover effects
+Subtle fade-in and slide-up animations for data updates
+Real-time vitals should update fluidly (no flicker)
+Alerts should:
+Slide in from top/right
+Pulse or glow subtly when critical
+Use micro-interactions (button clicks, loading states)
+🎯 UX Focus:
+Prioritize clarity and speed
+Ensure UI is non-cluttered and easy to scan
+Critical information should be visually prominent
+Fully responsive (desktop-first, but mobile-friendly)
+🎨 Visual Enhancements:
+Use modern illustrations or medical-themed artwork
+Soft shadows and rounded cards (not overly decorative)
+Consistent spacing and alignment grid
+⚡ Overall Feel:
+
+The UI should feel like a high-end medical monitoring system — reliable, fast, and visually calm, but capable of highlighting urgency instantly when needed.
+
+You are a senior frontend engineer building a modern healthcare dashboard for:
+
+"Project Sentinel – Decentralized ICU Monitoring System"
+
+Your task is to build a real-time monitoring UI.
+
+🎨 Tech Stack (MANDATORY):
+- React (Vite or CRA)
+- Tailwind CSS
+- Socket.io-client
+- Chart.js (for graphs)
+
+🎯 Core Features:
+
+1. Dashboard Layout
+   - Sidebar + Main panel
+   - Clean hospital-style UI
+
+2. Patient List
+   - Show all patients
+   - Status indicator:
+     - Normal (green)
+     - Warning (yellow)
+     - Critical (red)
+
+3. Live Vitals Monitoring
+   - Real-time updates using WebSocket
+   - Show:
+     - Heart rate
+     - SpO2
+     - Temperature
+   - Graphs updating live
+
+4. Alert Panel 🚨
+   - Show critical alerts instantly
+   - Flash/red animation for emergency
+
+5. Patient Detail View
+   - Full vitals history
+   - Risk score display
+
+6. ICU Bed Status
+   - Show available vs occupied beds
+
+7. Authentication صفحات
+   - Login/Register UI
+
+🔌 Integration:
+- Connect to backend APIs
+- Use Socket.io for real-time updates
+
+📦 Output Format (VERY IMPORTANT):
+1. Folder structure
+2. Component breakdown
+3. Pages (Dashboard, PatientDetails, Login)
+4. Reusable components
+5. Tailwind styling
+6. API service layer (axios)
+7. WebSocket integration code
+8. Full working React code
+
+🚨 Constraints:
+- UI must look modern (hackathon-level impressive)
+- No dummy UI — must connect to backend
+- Must be responsive (mobile + desktop)
+
+Start generating the complete frontend step by step.
+
+You are a senior frontend engineer building a high-end, real-time healthcare dashboard for:
+
+🏥 Project Sentinel – Decentralized ICU Monitoring System
+
+Your goal is to create a visually stunning, production-quality UI that feels like a premium hospital monitoring system.
+
+🎨 Tech Stack (MANDATORY)
+React (Vite preferred)
+Tailwind CSS
+Socket.io-client
+Chart.js
+🎯 Core Features
+1. 🧭 Dashboard Layout
+Modern layout with:
+Fixed sidebar navigation
+Main content panel
+Sidebar should include:
+Dashboard
+Patients
+ICU Status
+Use glassmorphism or soft shadows
+Smooth page transitions
+2. 👨‍⚕️ Patient List
+Display patients in card/grid layout
+Each card includes:
+Name / ID
+Current vitals snapshot
+Status badge:
+🟢 Normal
+🟡 Warning
+🔴 Critical
+Add:
+Hover animations (scale + shadow lift)
+Click → navigate to patient details
+3. 📡 Live Vitals Monitoring
+Real-time updates using Socket.io
+Display:
+Heart Rate
+SpO2
+Temperature
+Use Chart.js for live graphs
+Smooth animated line charts
+No flickering on updates
+Add:
+Animated number counters
+Color change based on severity
+4. 🚨 Alert Panel (HIGH PRIORITY UI)
+Real-time critical alerts
+Alerts should:
+Slide in from right/top
+Pulse/glow when critical
+Auto-dismiss or persist based on severity
+Stack multiple alerts cleanly
+5. 🔍 Patient Detail View
+Full-page detailed dashboard:
+Historical charts
+Risk score (highlighted visually)
+Status indicator
+Layout should feel like ICU monitor screen
+6. 🛏 ICU Bed Status
+Visual representation:
+Grid of beds
+Color-coded occupancy
+Show:
+Available vs Occupied
+Add subtle animation when bed status changes
+7. 🔐 Authentication Pages
+Login & Register
+Clean centered form
+Add:
+Smooth input focus animations
+Loading states
+Error feedback UI
+✨ Animation & UI Experience (CRITICAL)
+Use smooth transitions everywhere (300–500ms)
+Add:
+Fade-in + slide-up on component load
+Hover micro-interactions
+Skeleton loaders while fetching data
+Real-time updates must feel:
+Fluid
+Non-jarring
+Alerts must feel urgent but not chaotic
+🎨 Design System
+Colors:
+Primary: Blue / Teal
+Background: Light gray / white
+Success: Green
+Warning: Yellow
+Danger: Red
+Style:
+Rounded cards (xl)
+Soft shadows
+Clean spacing (8px grid system)
+Typography:
+Inter / Roboto
+Clear hierarchy
+🔌 Integration
+Connect to backend APIs (Axios)
+Use JWT authentication
+WebSocket:
+Subscribe to:
+vitals updates
+alert events
+📦 Output Format (STRICT)
+Folder structure
+Component breakdown
+Pages:
+Dashboard
+PatientDetails
+Login/Register
+Reusable components
+Tailwind setup & styling
+API service layer (Axios)
+WebSocket integration
+Full working React code
+🚨 Constraints
+UI must be hackathon-winning level
+NO static/mock UI — everything connected
+Fully responsive (desktop-first, mobile supported)
+Code must be clean and modular
+🧠 Extra Edge (Optional but HIGHLY Recommended)
+Add dark mode toggle
+Add search & filter patients
+Add notification sound for critical alerts

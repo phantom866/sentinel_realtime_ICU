@@ -3,20 +3,31 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Project Sentinel - Decentralized ICU Monitoring System API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: patients
+    description: Patient management
+  - name: vitals
+    description: Vital signs ingestion and history
+  - name: beds
+    description: ICU bed tracking
+  - name: alerts
+    description: Critical alerts
+  - name: dashboard
+    description: Dashboard summaries
+  - name: ai
+    description: AI risk prediction
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +35,257 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /patients:
+    get:
+      operationId: listPatients
+      tags: [patients]
+      summary: List all patients
+      responses:
+        "200":
+          description: Patients list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Patient"
+    post:
+      operationId: createPatient
+      tags: [patients]
+      summary: Add a new patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePatient"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+
+  /patients/{id}:
+    get:
+      operationId: getPatient
+      tags: [patients]
+      summary: Get patient details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Patient
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientDetail"
+    delete:
+      operationId: deletePatient
+      tags: [patients]
+      summary: Discharge patient
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /patients/{id}/vitals:
+    get:
+      operationId: getPatientVitals
+      tags: [vitals]
+      summary: Get vitals history for a patient
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 60
+      responses:
+        "200":
+          description: Vitals history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vitals"
+    post:
+      operationId: ingestVitals
+      tags: [vitals]
+      summary: Ingest a new vitals reading
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IngestVitals"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vitals"
+
+  /patients/{id}/predict-risk:
+    get:
+      operationId: predictRisk
+      tags: [ai]
+      summary: Predict patient risk score (mock AI)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Risk prediction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskPrediction"
+
+  /beds:
+    get:
+      operationId: listBeds
+      tags: [beds]
+      summary: List all ICU beds
+      responses:
+        "200":
+          description: Beds list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bed"
+
+  /beds/{id}/allocate:
+    post:
+      operationId: allocateBed
+      tags: [beds]
+      summary: Allocate a bed to a patient
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [patientId]
+              properties:
+                patientId:
+                  type: integer
+      responses:
+        "200":
+          description: Bed allocated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bed"
+
+  /beds/{id}/release:
+    post:
+      operationId: releaseBed
+      tags: [beds]
+      summary: Release a bed
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Bed released
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bed"
+
+  /alerts:
+    get:
+      operationId: listAlerts
+      tags: [alerts]
+      summary: List active alerts
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Alerts list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alert"
+
+  /alerts/{id}/acknowledge:
+    post:
+      operationId: acknowledgeAlert
+      tags: [alerts]
+      summary: Acknowledge an alert
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Acknowledged
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alert"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Dashboard summary metrics
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +293,209 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    PatientStatus:
+      type: string
+      enum: [normal, warning, critical]
+
+    Patient:
+      type: object
+      required: [id, name, age, mrn, ward, status, riskScore, admittedAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          type: integer
+        mrn:
+          type: string
+        gender:
+          type: string
+          nullable: true
+        ward:
+          type: string
+        bedNumber:
+          type: string
+          nullable: true
+        diagnosis:
+          type: string
+          nullable: true
+        status:
+          $ref: "#/components/schemas/PatientStatus"
+        riskScore:
+          type: number
+        admittedAt:
+          type: string
+          format: date-time
+        latestVitals:
+          $ref: "#/components/schemas/Vitals"
+          nullable: true
+
+    PatientDetail:
+      allOf:
+        - $ref: "#/components/schemas/Patient"
+        - type: object
+          properties:
+            attendingPhysician:
+              type: string
+              nullable: true
+            notes:
+              type: string
+              nullable: true
+
+    CreatePatient:
+      type: object
+      required: [name, age, mrn, ward]
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+        mrn:
+          type: string
+        gender:
+          type: string
+        ward:
+          type: string
+        bedNumber:
+          type: string
+        diagnosis:
+          type: string
+        attendingPhysician:
+          type: string
+
+    Vitals:
+      type: object
+      required: [id, patientId, heartRate, spo2, bpSystolic, bpDiastolic, temperature, timestamp]
+      properties:
+        id:
+          type: integer
+        patientId:
+          type: integer
+        heartRate:
+          type: number
+        spo2:
+          type: number
+        bpSystolic:
+          type: number
+        bpDiastolic:
+          type: number
+        temperature:
+          type: number
+        respiratoryRate:
+          type: number
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+
+    IngestVitals:
+      type: object
+      required: [heartRate, spo2, bpSystolic, bpDiastolic, temperature]
+      properties:
+        heartRate:
+          type: number
+        spo2:
+          type: number
+        bpSystolic:
+          type: number
+        bpDiastolic:
+          type: number
+        temperature:
+          type: number
+        respiratoryRate:
+          type: number
+
+    Bed:
+      type: object
+      required: [id, ward, bedNumber, occupied]
+      properties:
+        id:
+          type: integer
+        ward:
+          type: string
+        bedNumber:
+          type: string
+        occupied:
+          type: boolean
+        patientId:
+          type: integer
+          nullable: true
+        patientName:
+          type: string
+          nullable: true
+        patientStatus:
+          $ref: "#/components/schemas/PatientStatus"
+          nullable: true
+
+    AlertSeverity:
+      type: string
+      enum: [info, warning, critical]
+
+    Alert:
+      type: object
+      required: [id, patientId, patientName, type, severity, message, timestamp, acknowledged]
+      properties:
+        id:
+          type: integer
+        patientId:
+          type: integer
+        patientName:
+          type: string
+        type:
+          type: string
+        severity:
+          $ref: "#/components/schemas/AlertSeverity"
+        message:
+          type: string
+        value:
+          type: number
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+        acknowledged:
+          type: boolean
+
+    RiskPrediction:
+      type: object
+      required: [patientId, riskScore, riskLevel, factors]
+      properties:
+        patientId:
+          type: integer
+        riskScore:
+          type: number
+        riskLevel:
+          type: string
+          enum: [low, moderate, high, severe]
+        factors:
+          type: array
+          items:
+            type: string
+        recommendation:
+          type: string
+
+    DashboardSummary:
+      type: object
+      required: [totalPatients, criticalCount, warningCount, normalCount, totalBeds, occupiedBeds, activeAlerts, recentAlerts]
+      properties:
+        totalPatients:
+          type: integer
+        criticalCount:
+          type: integer
+        warningCount:
+          type: integer
+        normalCount:
+          type: integer
+        totalBeds:
+          type: integer
+        occupiedBeds:
+          type: integer
+        activeAlerts:
+          type: integer
+        recentAlerts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Alert"
